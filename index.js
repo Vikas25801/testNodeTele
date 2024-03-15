@@ -10,7 +10,8 @@ const token = '6509996039:AAEpRtn2QdWcPYVZHHz2WxCCTZ7uK0jPY6g';
 const bot = new TelegramBot(token, { polling: false });
 
 // Replace 'YOUR_GROUP_ID' with your actual group chat ID
-const groupId = '-1002041458711';
+const groupIdC = '-1002041458711';
+const groupIdS = '-1002077076129';
 
 // Creating an instance of Express application
 const app = express();
@@ -27,7 +28,7 @@ app.get('/', (req, res) => {
 app.post('/dataC', (req, res) => {
     const data_ = req.body.data;
 
-    bot.sendMessage(groupId, data_)
+    bot.sendMessage(groupIdC, data_)
         .then(() => {
             //console.log('Message sent to group:', data_);
         })
@@ -43,7 +44,7 @@ app.post('/dataC', (req, res) => {
 app.post('/dataS', (req, res) => {
     const data_ = req.body.data;
 
-    bot.sendMessage(groupId, data_)
+    bot.sendMessage(groupIdS, data_)
         .then(() => {
             //console.log('Message sent to group:', data_);
         })
